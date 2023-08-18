@@ -21211,7 +21211,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var defaultStyles = {
   clockStyle: {
-    height: "8rem",
     margin: 0,
     padding: 0,
     display: "flex",
@@ -21219,10 +21218,10 @@ var defaultStyles = {
     alignItems: "center",
     flexDirection: "row",
     fontSize: "61px",
-    fontFamily: "sans-serif",
     letterSpacing: "5px",
     textShadow: "0 0 10px #fff",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
+    flexWrap: "wrap"
   },
   clockHeaderStyle: {
     margin: "13px",
@@ -21232,7 +21231,7 @@ var defaultStyles = {
     alignItems: "center"
   },
   clockSubHeader: {
-    marginBottom: "10px",
+    marginBottom: "8px",
     fontSize: "13px",
     letterSpacing: "initial"
   }
