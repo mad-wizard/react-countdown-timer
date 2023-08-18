@@ -34,7 +34,7 @@ const defaultStyles = {
 class ReactClock extends Component {
 
   static propTypes = {
-    startDate: PropTypes.string,
+    endDate: PropTypes.string,
     color: PropTypes.string,
     size: PropTypes.number,
     clockShadow: PropTypes.string,
@@ -44,7 +44,7 @@ class ReactClock extends Component {
   };
 
   state = {
-    dateTimestamp: Date.now()
+    timeRemaining: moment(this.props.endDate).diff(Date.now())
   };
 
   componentDidMount() {
@@ -56,57 +56,13 @@ class ReactClock extends Component {
   }
 
   tick = () => {
-    this.setState({ dateTimestamp: Date.now() });
-  }
-
-  calculateNumberOfDaysLeft = startDate => {
-    return moment().diff(startDate, 'days');
-  }
-
-  // pad string with zero
-  pad = (str, max = 2) => str.length < max ? `0 ${str}` : str;
-
-  static Day = ({ daysLeft, startDate, isDayEnabled }) => {
-    return <div>
-      {
-        isDayEnabled ?
-          <div style={{ ...defaultStyles.clockHeaderStyle }}>
-            <div style={{ ...defaultStyles.clockSubHeader }}> {startDate ? 'DAYS' : 'DAY'} </div>
-            <div>{startDate ? daysLeft : moment().format('DD')}</div>
-          </div> :
-          ''
-      }
-    </div>;
-  }
-
-  static Seperator = ({ clockSeparator, shouldShow = true }) => {
-    return <span>{shouldShow ? (clockSeparator ? clockSeparator : '.') : ''}</span>;
-  }
-
-  static Hour = () => {
-    return <div style={{ ...defaultStyles.clockHeaderStyle }}>
-      <div style={{ ...defaultStyles.clockSubHeader }}> hours </div>
-      <div>{moment().format('HH')}</div>
-    </div>;
-  }
-
-  static Minutes = () => {
-    return <div style={{ ...defaultStyles.clockHeaderStyle }}>
-      <div style={{ ...defaultStyles.clockSubHeader }}> minutes </div>
-      <div>{moment().format('mm')}</div>
-    </div>
-  }
-
-  static Seconds = () => {
-    return <div style={{ ...defaultStyles.clockHeaderStyle }}>
-      <div style={{ ...defaultStyles.clockSubHeader }}> seconds </div>
-      <div>{moment().format('ss')}</div>
-    </div>
+    this.setState({ timeRemaining: moment(this.props.endDate).diff(Date.now()) });
   }
 
   render() {
-    const { startDate, day, style, clockSeparator } = this.props;
-    const daysLeft = this.pad(this.calculateNumberOfDaysLeft(startDate).toString());
+    const { day, style, clockSeparator } = this.props;
+    const duration = moment.duration(this.state.timeRemaining);
+    const daysLeft = String(duration.days()).padStart(2, '0');
     const isDayEnabled = day === undefined ? false : day;
     return (
       <div
@@ -114,15 +70,31 @@ class ReactClock extends Component {
           ...defaultStyles.clockStyle,
           ...style
         }}>
-        <ReactClock.Day daysLeft={daysLeft} startDate={startDate} isDayEnabled={isDayEnabled} />
-        <ReactClock.Seperator clockSeparator={clockSeparator} shouldShow={isDayEnabled} />
-        <ReactClock.Hour />
+        {isDayEnabled && <div style={{ ...defaultStyles.clockHeaderStyle }}>
+          <div style={{ ...defaultStyles.clockSubHeader }}>DAYS</div>
+          <div>{daysLeft}</div>
+        </div>}
+        {isDayEnabled && <ReactClock.Seperator clockSeparator={clockSeparator} />}
+        <div style={{ ...defaultStyles.clockHeaderStyle }}>
+          <div style={{ ...defaultStyles.clockSubHeader }}>HOURS</div>
+          <div>{String(duration.hours()).padStart(2, '0')}</div>
+        </div>
         <ReactClock.Seperator clockSeparator={clockSeparator} />
-        <ReactClock.Minutes />
+        <div style={{ ...defaultStyles.clockHeaderStyle }}>
+          <div style={{ ...defaultStyles.clockSubHeader }}>MINUTES</div>
+          <div>{String(duration.minutes()).padStart(2, '0')}</div>
+        </div>
         <ReactClock.Seperator clockSeparator={clockSeparator} />
-        <ReactClock.Seconds />
+        <div style={{ ...defaultStyles.clockHeaderStyle }}>
+          <div style={{ ...defaultStyles.clockSubHeader }}>SECONDS</div>
+          <div>{String(duration.seconds()).padStart(2, '0')}</div>
+        </div>
       </div>
     );
+  }
+
+  static Seperator = ({ clockSeparator, shouldShow = true }) => {
+    return <span>{shouldShow ? (clockSeparator ? clockSeparator : '.') : ''}</span>;
   }
 }
 
