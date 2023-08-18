@@ -1,5 +1,5 @@
 {
-  "name": "countdown-timer-react",
+  "name": "@goldeneye-industrial-intelligence/react-countdown-clock",
   "version": "2.0.0",
   "description": "A clock component for React",
   "main": "build/index.js",
