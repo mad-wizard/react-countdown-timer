@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 
 const defaultStyles = {
   clockStyle: {
-    height: "8rem",
     margin: 0,
     padding: 0,
     display: "flex",
@@ -12,10 +11,10 @@ const defaultStyles = {
     alignItems: "center",
     flexDirection: "row",
     fontSize: "61px",
-    fontFamily: "sans-serif",
     letterSpacing: "5px",
     textShadow: "0 0 10px #fff",
     textTransform: "uppercase",
+    flexWrap: "wrap",
   },
   clockHeaderStyle: {
     margin: "13px",
@@ -25,7 +24,7 @@ const defaultStyles = {
     alignItems: "center",
   },
   clockSubHeader: {
-    marginBottom: "10px",
+    marginBottom: "8px",
     fontSize: "13px",
     letterSpacing: "initial",
   },
@@ -63,7 +62,7 @@ class ReactClock extends Component {
   render() {
     const { day, style, clockSeparator } = this.props;
     const duration = moment.duration(this.state.timeRemaining);
-    const daysLeft = String(duration.days()).padStart(2, "0");
+    const daysLeft = Math.floor(duration.asDays());
     const isDayEnabled = day === undefined ? false : day;
     return (
       <div
