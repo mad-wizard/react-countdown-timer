@@ -1,5 +1,5 @@
 {
-  "name": "@goldeneye-open-source/react-countdown-timer",
+  "name": "countdown-timer-react",
   "version": "2.0.0",
   "description": "A clock component for React",
   "main": "build/index.js",
